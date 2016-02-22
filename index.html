@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Jobber Charlie?</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/png" href="favicon_charlie.png">
+		<link href='https://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
+		<style>
+			body {
+			    font-family: 'Special Elite', cursive;
+			    background-color: #FFF;
+			    color: #000;
+			}
+			h1 {
+				font-size: 4em;
+			}
+			#baby_img,
+			#working_img {
+				opacity: 1;
+				width: 500px;
+				padding-top: 25px;
+				display: none;
+			}
+		</style>
+	</head>
+	<body align="center">
+		<img id="baby_img" src="baby.jpg" alt="baby" />
+		<img id="working_img" src="troll.png" alt="working" />
+		<h1 id="charlie_text"></h1>
+		<h2 id="additional_text"></h2>
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				var now = new Date();
+				now.setHours(0,0,0,0);
+
+				var workingDays = [
+					'2016-02-15',
+					'2016-02-18',
+					'2016-02-19',
+					'2016-02-23',
+					'2016-03-02',
+					'2016-04-04',
+					'2016-04-05',
+					'2016-04-06',
+					'2016-04-07',
+					'2016-04-08',
+					'2016-04-18',
+					'2016-04-19',
+					'2016-04-20',
+					'2016-04-21',
+					'2016-04-22',
+					'2016-05-02',
+					'2016-05-03',
+					'2016-05-04',
+					'2016-05-05',
+					'2016-05-06',
+					'2016-05-18',
+					'2016-05-19',
+					'2016-05-20',
+					'2016-05-23',
+					'2016-05-24',
+					'2016-05-25',
+					'2016-05-26',
+					'2016-05-27',
+				];
+
+				var nextWorkingDay = null;
+				var isWorking = false;
+
+				for (var i = 0; i < workingDays.length; i++) {
+					var date = new Date(workingDays[i]);
+					date.setHours(0,0,0,0);
+					if (date.getTime() === now.getTime()) {
+						isWorking = true;
+					}
+					if (date > now) {
+						nextWorkingDay = workingDays[i];
+						break;
+					}
+				}
+
+				if (isWorking) {
+					$('#working_img').show();
+					$('#charlie_text').text('Ja.');
+					$('body').css('background-color', 'green');
+				} else {
+					$('#baby_img').show();
+					$('#charlie_text').text('Nei.');
+					$('#additional_text').text('Tilbake ' + nextWorkingDay);
+					$('body').css('background-color', 'red');	
+				}
+
+		        var info = {
+		        	isWorking: isWorking,
+		        	nextWorkingDay: nextWorkingDay
+		        };
+		        var json = getUrlParameter('json');
+		        if (json) {
+		        	document.write(JSON.stringify(info));	
+		        }
+			});
+
+			var getUrlParameter = function getUrlParameter(sParam) {
+			    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+			        sURLVariables = sPageURL.split('&'),
+			        sParameterName,
+			        i;
+
+			    for (i = 0; i < sURLVariables.length; i++) {
+			        sParameterName = sURLVariables[i].split('=');
+
+			        if (sParameterName[0] === sParam) {
+			            return sParameterName[1] === undefined ? true : sParameterName[1];
+			        }
+			    }
+			};
+		</script>
+	</body>
+</html>
